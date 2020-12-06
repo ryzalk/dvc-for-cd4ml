@@ -1,0 +1,24 @@
+name: Change Latest Docker Image
+on: 
+  workflow_dispatch:
+    inputs:
+      docker_commit_tag:
+        description: 'Docker image tag to be set as latest'
+        required: true
+
+jobs:
+
+  retag_latest:
+    name: Tag Latest Relevant Image
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Retag chosen image with latest
+      env:
+        CHOSEN_DOCKER_TAG: ${{ github.event.inputs.docker_commit_tag }}
+        DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
+        DOCKER_PW: ${{ secrets.DOCKERHUB_PW }}
+      run: |
+        echo $DOCKER_PW | docker login -u $DOCKER_USER --password-stdin
+        docker pull $DOCKER_USER/dvc-for-cd4ml:$CHOSEN_DOCKER_TAG
+        docker image tag $DOCKER_USER/dvc-for-cd4ml:$CHOSEN_DOCKER_TAG $DOCKER_USER/dvc-for-cd4ml:latest
+        docker push $DOCKER_USER/dvc-for-cd4ml:latest

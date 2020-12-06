@@ -1,0 +1,44 @@
+name: Build Environment
+on:
+  push:
+    branches-ignore:
+      - master
+      - 'feature/**'
+
+jobs:
+
+  build_environment:
+    name: Check File Changes & Build Environment
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout current branch
+      uses: actions/checkout@v2
+    - name: Check for file changes
+      id: check_file_changes
+      uses: trilom/file-changes-action@v1.2.4
+    - name: Display file changes
+      id: changed_files
+      run: |
+        export CHANGED_FILES='${{ steps.check_file_changes.outputs.files}}'
+        echo "::set-output name=FILES_STATUS::$(bash ./scripts/check-file-matches.sh)"
+    - name: Get current commit SHA
+      id: get_sha
+      run: echo "::set-output name=SHA_SHORT::$(git rev-parse --short HEAD)"
+    - name: Build Docker image
+      id: build_docker
+      if: steps.changed_files.outputs.FILES_STATUS == 'Matched'
+      env:
+        DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
+        DOCKER_PW: ${{ secrets.DOCKERHUB_PW }}
+        COMMIT_SHA: ${{ steps.get_sha.outputs.SHA_SHORT }}
+      run: |
+        echo $DOCKER_PW | docker login -u $DOCKER_USER --password-stdin
+        docker build . -t $DOCKER_USER/dvc-for-cd4ml:$COMMIT_SHA -f ./docker/dvc-for-cd4ml.Dockerfile
+    - name: Push Docker image
+      if: steps.build_docker.outcome == 'success'
+      env:
+        DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
+        COMMIT_SHA: ${{ steps.get_sha.outputs.SHA_SHORT }}
+      run: |
+        echo "Pushing Docker image with new tag: $COMMIT_SHA"
+        docker push $DOCKER_USER/dvc-for-cd4ml:$COMMIT_SHA
