@@ -1,0 +1,12 @@
+name: dvc-for-cd4ml
+dependencies:
+  - python=3.6.8
+  - pip=20.2.2
+  - pip:
+    - tensorflow==2.3.0
+    - tensorflow_hub==0.10.0
+    - numpy==1.17.2
+    - wandb==0.9.6
+    - pylint==2.6.0
+    - pytest-cov==2.10.1
+    - Flask==1.1.2
