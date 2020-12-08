@@ -1,0 +1,10 @@
+data_prep:
+  cmd: python src/data_prep.py
+  deps:
+  - path: data/raw
+    md5: d0cf3fa39c9c54184520b5b3330fee32.dir
+  - path: src/data_prep.py
+    md5: 60a2b3bd883afeaa32531c271791b119
+  outs:
+  - path: data/processed
+    md5: 27cea6647aa03d2ccd578fdfee491412.dir
