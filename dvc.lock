@@ -8,3 +8,21 @@ data_prep:
   outs:
   - path: data/processed
     md5: 27cea6647aa03d2ccd578fdfee491412.dir
+train_model:
+  cmd: python src/train.py
+  deps:
+  - path: data/processed
+    md5: 27cea6647aa03d2ccd578fdfee491412.dir
+  - path: src/train.py
+    md5: e2e0e420e48b5dcd8d42b2c2fbba0bd0
+  params:
+    params.yaml:
+      train.bs: 32
+      train.epochs: 3
+      train.metric: accuracy
+      train.pretrained_embedding: https://tfhub.dev/google/nnlm-en-dim128-with-normalization/2
+  outs:
+  - path: models/text-classification-model
+    md5: 39b72f35b87225ea5a4d55a952aa77cd.dir
+  - path: train-run-metrics.md
+    md5: bc3b1a4e12fff4c4aece17f10a10b19d
