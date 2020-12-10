@@ -1,0 +1,21 @@
+name: Test & Analyse Code
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+
+  test_analyse_code:
+    name: Test & Analyse Code
+    runs-on: ubuntu-18.04
+    container: docker://ryzalk/dvc-for-cd4ml:latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run unit tests and linter
+      shell: bash
+      run: |
+        source activate dvc-for-cd4ml
+        pip install pylint --upgrade
+        pytest tests --cov=src
+        pylint --fail-under=8.0 src

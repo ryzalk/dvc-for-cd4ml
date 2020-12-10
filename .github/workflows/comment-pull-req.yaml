@@ -1,0 +1,45 @@
+name: Create Comments for Pull Request
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+
+  get_latest_commit_message:
+    name: Get Latest Commit Message
+    runs-on: ubuntu-18.04
+    outputs:
+      commit_message: ${{ steps.get_commit_message.outputs.COMMIT_MESSAGE }}
+    steps:
+    - name: Checkout current branch
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: Get commit message
+      id: get_commit_message
+      run: echo "::set-output name=COMMIT_MESSAGE::$(git log --format=%B -n 1 ${{ github.event.after }})"
+    - name: Echo latest commit message
+      env:
+        COMMIT_MESSAGE: ${{ steps.get_commit_message.outputs.COMMIT_MESSAGE }}
+      run: |
+        echo "Message for latest commit: $COMMIT_MESSAGE"
+
+  model_performance:
+    name: Comment Model Performance
+    runs-on: ubuntu-18.04
+    container: docker://ryzalk/dvc-for-cd4ml:latest
+    needs: get_latest_commit_message
+    steps:
+    - uses: actions/checkout@v2
+    - name: Post comment with model experiment info
+      if: contains(needs.get_latest_commit_message.outputs.commit_message, 'comment-model-exp') == true
+      env:
+        AZ_CONN_STRING: ${{ secrets.AZ_CONN_STRING }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+      shell: bash
+      run: |
+        source activate dvc-for-cd4ml
+        dvc remote modify --local azremote connection_string "$AZ_CONN_STRING"
+        dvc pull train-run-metrics.md
+        cml-send-comment train-run-metrics.md

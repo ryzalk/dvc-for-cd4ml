@@ -1,0 +1,4 @@
+[core]
+    remote = azremote
+['remote "azremote"']
+    url = azure://dvc-remote/dvc-for-cd4ml

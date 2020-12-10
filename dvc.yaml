@@ -1,0 +1,21 @@
+stages:
+  data_prep:
+    cmd: python src/data_prep.py
+    deps:
+    - data/raw
+    - src/data_prep.py
+    outs:
+    - data/processed
+  train_model:
+    cmd: python src/train.py
+    deps:
+    - data/processed
+    - src/train.py
+    params:
+    - train.bs
+    - train.epochs
+    - train.metric
+    - train.pretrained_embedding
+    outs:
+    - models/text-classification-model
+    - train-run-metrics.md

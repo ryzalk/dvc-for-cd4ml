@@ -1,0 +1,14 @@
+data_prep:
+  raw_data_path: './data/raw/acl-imdb-movie-reviews'
+
+train:
+  wnb_entity: 'ryzal-dprmrk'
+  wnb_project: 'dvc-for-cd4ml'
+  data_path: './data/processed/acl-imdb-movie-reviews'
+  val_split: 0.2
+  bs: 32
+  seed: 4155
+  epochs: 3
+  optimiser: 'adam'
+  metric: 'accuracy'
+  pretrained_embedding: 'https://tfhub.dev/google/nnlm-en-dim128-with-normalization/2'
