@@ -1,0 +1,8 @@
+.pytest_cache
+wandb
+.git
+data
+.dvc
+**/__pycache__/**
+**/.ipynb_checkpoints/**
+**/.DS_Store/**
