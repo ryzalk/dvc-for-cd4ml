@@ -18,11 +18,11 @@ train_model:
   params:
     params.yaml:
       train.bs: 32
-      train.epochs: 3
+      train.epochs: 5
       train.metric: accuracy
       train.pretrained_embedding: https://tfhub.dev/google/nnlm-en-dim128-with-normalization/2
   outs:
   - path: models/text-classification-model
-    md5: 39b72f35b87225ea5a4d55a952aa77cd.dir
+    md5: 1f9b12f590b3d954c6e4c96294ee877a.dir
   - path: train-run-metrics.md
-    md5: bc3b1a4e12fff4c4aece17f10a10b19d
+    md5: d5cf589d322edb08ecf68443e46f4029
