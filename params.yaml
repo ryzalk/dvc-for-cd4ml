@@ -8,7 +8,7 @@ train:
   val_split: 0.2
   bs: 32
   seed: 4155
-  epochs: 5
+  epochs: 3
   optimiser: 'adam'
   metric: 'accuracy'
   pretrained_embedding: 'https://tfhub.dev/google/nnlm-en-dim128-with-normalization/2'
