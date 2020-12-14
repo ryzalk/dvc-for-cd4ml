@@ -1,6 +1,8 @@
-#AISG Makerspace: DVC for CD4ML - Part 2
+# AISG Makerspace: DVC for CD4ML - Part 2
 
 ![DVC for CD4ML - Part 2 Banner](https://makerspace.aisingapore.org/wp-content/uploads/2020/12/ShareAI-DVC-for-CD4ML-Banner-Part-2.png)
+
+This repository contains all the code and scripts for the post mentioned in the title. This README document lists down the commands for the different workflows for the reader to execute in sequence.
 
 ## [1. Beginning Continuous Integration](https://makerspace.aisingapore.org/2020/12/data-versioning-for-cd4ml-–-part-2/#begin-ci)
 
