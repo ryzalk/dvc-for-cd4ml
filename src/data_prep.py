@@ -64,7 +64,7 @@ def process_file(file_path):
 def main():
     """Main programme to read in raw data files and process them.
 
-    Data inputs and outputs are stated in `./configs/params.yaml`.
+    Data inputs and outputs are stated in `./params.yaml`.
     """
     with open('./params.yaml', 'r') as curr_file:
         args = yaml.safe_load(curr_file)
